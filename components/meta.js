@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { siteMeta } from 'lib/constants'
 import { useRouter } from 'next/router'
-import siteImg from 'images/ogp.jpg' // 汎用OGP画像
+import siteImg from 'images/ogp.jpg'
 const {
   siteTitle,
   siteDesc,
