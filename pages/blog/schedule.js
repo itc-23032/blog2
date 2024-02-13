@@ -1,6 +1,4 @@
 import { getPostBySlug } from 'lib/api'
-import { extractText } from 'lib/extract-text'
-import Meta from 'components/meta'
 import Container from 'components/container'
 import PostHeader from 'components/post-header'
 import PostBody from 'components/post-body'
@@ -10,65 +8,59 @@ import {
   TwoColumnSidebar
 } from 'components/two-column'
 import ConvertBody from 'components/convert-body'
-import PostCategories from 'components/post-categories'
 import Image from 'next/image'
+import PostCategories from 'components/post-categories'
+import Meta from 'components/meta'
+import { extractText } from 'lib/extract-text'
 
-const Schedule = ({
-  title,
-  publish,
-  content,
-  eyecatch,
-  categories,
-  description
-}) => {
+const Schedule = props => {
   return (
     <Container>
       <Meta
-        pageTitle={title}
-        pageDesc={description}
-        pageImg={eyecatch.url}
-        pageImgW={eyecatch.width}
-        pageImgH={eyecatch.height}
+        pageTitle={props.title}
+        pageDesc={props.description}
+        pageImg={props.eyecatch.url}
+        pageImgW={props.eyecatch.width}
+        pageImgH={props.eyecatch.height}
       />
-
       <article>
-        <PostHeader title={title} subtitle='Blog Article' publish={publish} />
-
+        <PostHeader
+          title={props.title}
+          subtitle='Blog Article'
+          publish={props.publish}
+        />
         <figure>
           <Image
-            src={eyecatch.url}
+            src={props.eyecatch.url}
             alt=''
             layout='responsive'
-            width={eyecatch.width}
-            height={eyecatch.height}
-            size='(min-width: 1152px) 1152px, 100vw'
-            prority
+            width={props.eyecatch.width}
+            height={props.eyecatch.height}
+            sizes='(min-width: 1152px) 1152px, 100vw'
           />
         </figure>
         <TwoColumn>
           <TwoColumnMain>
             <PostBody>
-              <ConvertBody contentHTML={content} />
+              <ConvertBody contentHTML={props.content} />
             </PostBody>
           </TwoColumnMain>
           <TwoColumnSidebar>
-            <PostCategories categories={categories} />
+            <PostCategories categories={props.categories} />
           </TwoColumnSidebar>
         </TwoColumn>
       </article>
     </Container>
   )
 }
-
 export default Schedule
 
-export async function getStaticProps () {
+export const getStaticProps = async () => {
   const slug = 'schedule'
 
   const post = await getPostBySlug(slug)
 
   const description = extractText(post.content)
-
   return {
     props: {
       title: post.title,
